@@ -12,3 +12,37 @@ body {
 * {
   box-sizing: border-box;
 }
+
+/* ── Leaflet popup dark theme ──────────────────────────────────────────────── */
+.leaflet-popup-content-wrapper {
+  background: #0F1629;
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.leaflet-popup-tip {
+  background: #0F1629;
+}
+
+.leaflet-popup-content {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 10px 14px;
+}
+
+.leaflet-popup-close-button {
+  color: #888 !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: #fff !important;
+}
+
+/* Attribution small */
+.leaflet-control-attribution {
+  font-size: 10px;
+  opacity: 0.6;
+}

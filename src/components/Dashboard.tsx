@@ -1,12 +1,16 @@
 import { useState, useEffect, useCallback } from 'react'
 import { fetchStats, fetchChart } from '../api'
 import type { StatsResponse, ChartPoint } from '../types'
+import type { Page } from '../App'
 import StatCard from './StatCard'
 import SightingsChart from './SightingsChart'
 import ThreatBreakdown from './ThreatBreakdown'
 import RecentSightingsTable from './RecentSightingsTable'
+import NavTabs from './NavTabs'
 
 interface Props {
+  activePage: Page
+  onNavigate: (p: Page) => void
   onSignOut: () => void
 }
 
@@ -15,7 +19,7 @@ const PHT_TIME = new Intl.DateTimeFormat('en-PH', {
   hour: '2-digit', minute: '2-digit', second: '2-digit',
 })
 
-export default function Dashboard({ onSignOut }: Props) {
+export default function Dashboard({ activePage, onNavigate, onSignOut }: Props) {
   const [stats,       setStats]       = useState<StatsResponse | null>(null)
   const [chart,       setChart]       = useState<ChartPoint[]>([])
   const [loading,     setLoading]     = useState(true)
@@ -53,11 +57,14 @@ export default function Dashboard({ onSignOut }: Props) {
       {/* ── Top bar ──────────────────────────────────────────────────────── */}
       <header className="bg-card border-b border-white/5 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-teal animate-pulse" />
-            <span className="font-bold text-lg tracking-tight">
-              SnapHook <span className="text-teal">Admin</span>
-            </span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-teal animate-pulse" />
+              <span className="font-bold text-lg tracking-tight">
+                SnapHook <span className="text-teal">Admin</span>
+              </span>
+            </div>
+            <NavTabs activePage={activePage} onNavigate={onNavigate} />
           </div>
           <div className="flex items-center gap-6">
             {lastUpdated && (
