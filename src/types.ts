@@ -5,6 +5,7 @@ export interface RecentSighting {
   threatScore: number
   radioType: string
   fingerprintId: string | null
+  estimatedDistanceM: number | null
   timestamp: string
 }
 
@@ -23,6 +24,17 @@ export interface StatsResponse {
     active: number
   }
   recentSightings: RecentSighting[]
+}
+
+export interface ConfigEntry {
+  key:         string
+  value:       string
+  type:        'float' | 'int' | 'bool' | 'string'
+  label:       string
+  description: string
+  minValue:    number | null
+  maxValue:    number | null
+  updatedAt:   string
 }
 
 export interface ChartPoint {

@@ -2,8 +2,9 @@ import { useState } from 'react'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import MapPage from './pages/MapPage'
+import ConfigPage from './pages/ConfigPage'
 
-export type Page = 'dashboard' | 'map'
+export type Page = 'dashboard' | 'map' | 'config'
 
 export default function App() {
   const [authed, setAuthed] = useState(
@@ -20,7 +21,11 @@ export default function App() {
     return <Login onSuccess={() => setAuthed(true)} />
   }
 
-  return page === 'dashboard'
-    ? <Dashboard activePage={page} onNavigate={setPage} onSignOut={handleSignOut} />
-    : <MapPage   activePage={page} onNavigate={setPage} onSignOut={handleSignOut} />
+  const navProps = { activePage: page, onNavigate: setPage, onSignOut: handleSignOut }
+
+  switch (page) {
+    case 'map':    return <MapPage    {...navProps} />
+    case 'config': return <ConfigPage {...navProps} />
+    default:       return <Dashboard  {...navProps} />
+  }
 }

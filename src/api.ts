@@ -1,4 +1,4 @@
-import type { StatsResponse, ChartPoint, Hotzone } from './types'
+import type { StatsResponse, ChartPoint, Hotzone, ConfigEntry } from './types'
 
 const BASE_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'https://api.thesnaphook.app'
 
@@ -27,3 +27,17 @@ export async function testAuth(key: string): Promise<boolean> {
 export const fetchStats    = ()  => request<StatsResponse>('/admin/stats')
 export const fetchChart    = ()  => request<ChartPoint[]>('/admin/sightings/chart')
 export const fetchHotzones = ()  => request<Hotzone[]>('/admin/hotzones')
+export const fetchConfig   = ()  => request<ConfigEntry[]>('/admin/config')
+
+export async function updateConfig(key: string, value: string): Promise<ConfigEntry> {
+  const res = await fetch(`${BASE_URL}/admin/config/${encodeURIComponent(key)}`, {
+    method:  'PUT',
+    headers: adminHeaders(),
+    body:    JSON.stringify({ value }),
+  })
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({})) as { error?: string }
+    throw Object.assign(new Error(body.error ?? `HTTP ${res.status}`), { status: res.status })
+  }
+  return res.json() as Promise<ConfigEntry>
+}

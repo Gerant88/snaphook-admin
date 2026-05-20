@@ -3,6 +3,7 @@ import type { Page } from '../App'
 const TABS: { id: Page; label: string }[] = [
   { id: 'dashboard', label: 'Dashboard' },
   { id: 'map',       label: 'Map'       },
+  { id: 'config',    label: 'Config'    },
 ]
 
 interface Props {

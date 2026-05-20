@@ -16,13 +16,18 @@ const scoreColor = (score: number) => {
 
 const fmtCoord = (v: number | null) => (v != null ? v.toFixed(4) : '—')
 
+const fmtDist = (d: number | null) =>
+  d != null ? `~${Math.round(d)}m` : '—'
+
+const HEADERS = ['ID', 'Lat / Lng', 'Threat Score', 'Radio', 'Est. Distance', 'Fingerprint', 'Time (PHT)']
+
 export default function RecentSightingsTable({ sightings }: Props) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-white/5">
-            {['ID', 'Lat / Lng', 'Threat Score', 'Radio', 'Fingerprint', 'Time (PHT)'].map((h) => (
+            {HEADERS.map((h) => (
               <th key={h} className="text-left text-muted text-xs font-medium uppercase tracking-wide pb-3 pr-4 last:pr-0">
                 {h}
               </th>
@@ -50,6 +55,11 @@ export default function RecentSightingsTable({ sightings }: Props) {
                 <span className="text-xs bg-white/5 rounded px-2 py-0.5 text-white/70">{s.radioType}</span>
               </td>
               <td className="py-3 pr-4 font-mono text-xs">
+                {s.estimatedDistanceM != null
+                  ? <span className="text-teal">{fmtDist(s.estimatedDistanceM)}</span>
+                  : <span className="text-muted/40 italic text-[10px]">—</span>}
+              </td>
+              <td className="py-3 pr-4 font-mono text-xs">
                 {s.fingerprintId
                   ? <span className="text-white/70">{s.fingerprintId}</span>
                   : <span className="text-muted/40 italic text-[10px]">—</span>}
@@ -61,7 +71,7 @@ export default function RecentSightingsTable({ sightings }: Props) {
           ))}
           {sightings.length === 0 && (
             <tr>
-              <td colSpan={6} className="py-8 text-center text-muted text-sm">
+              <td colSpan={7} className="py-8 text-center text-muted text-sm">
                 No sightings yet
               </td>
             </tr>
