@@ -49,8 +49,10 @@ export default function RecentSightingsTable({ sightings }: Props) {
               <td className="py-3 pr-4">
                 <span className="text-xs bg-white/5 rounded px-2 py-0.5 text-white/70">{s.radioType}</span>
               </td>
-              <td className="py-3 pr-4 font-mono text-xs text-muted">
-                {s.fingerprintId ?? '—'}
+              <td className="py-3 pr-4 font-mono text-xs">
+                {s.fingerprintId
+                  ? <span className="text-white/70">{s.fingerprintId}</span>
+                  : <span className="text-muted/40 italic text-[10px]">—</span>}
               </td>
               <td className="py-3 text-xs text-muted whitespace-nowrap">
                 {PHT.format(new Date(s.timestamp))}
