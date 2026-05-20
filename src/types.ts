@@ -34,6 +34,7 @@ export interface ConfigEntry {
   description: string
   minValue:    number | null
   maxValue:    number | null
+  isAppConfig: boolean
   updatedAt:   string
 }
 
