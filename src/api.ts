@@ -41,3 +41,31 @@ export async function updateConfig(key: string, value: string): Promise<ConfigEn
   }
   return res.json() as Promise<ConfigEntry>
 }
+
+export async function triggerTriangulation(fingerprintId: string): Promise<unknown> {
+  const res = await fetch(`${BASE_URL}/admin/triangulate/${encodeURIComponent(fingerprintId)}`, {
+    method:  'POST',
+    headers: adminHeaders(),
+  })
+  if (!res.ok) throw Object.assign(new Error(`HTTP ${res.status}`), { status: res.status })
+  return res.json()
+}
+
+export async function generateTestSightings(params: {
+  lat:           number
+  lng:           number
+  fingerprintId: string
+  count?:        number
+  radiusM?:      number
+}): Promise<{ ok: boolean; generated: number; fingerprintId: string }> {
+  const res = await fetch(`${BASE_URL}/admin/test/generate-sightings`, {
+    method:  'POST',
+    headers: adminHeaders(),
+    body:    JSON.stringify(params),
+  })
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({})) as { error?: string }
+    throw Object.assign(new Error(body.error ?? `HTTP ${res.status}`), { status: res.status })
+  }
+  return res.json() as Promise<{ ok: boolean; generated: number; fingerprintId: string }>
+}

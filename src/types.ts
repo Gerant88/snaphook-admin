@@ -44,12 +44,19 @@ export interface ChartPoint {
 }
 
 export interface Hotzone {
-  id: number
-  centerLat: number
-  centerLng: number
-  radius: number
-  reportCount: number
-  firstSeen: string
-  lastSeen: string
-  updatedAt: string
+  id:               number
+  centerLat:        number
+  centerLng:        number
+  radius:           number
+  reportCount:      number
+  firstSeen:        string
+  lastSeen:         string
+  updatedAt:        string
+  fingerprintId:    string | null
+  triLat:           number | null
+  triLng:           number | null
+  triConfidenceM:   number | null
+  triReporterCount: number | null
+  isMobile:         boolean
+  lastTriangulated: string | null
 }
