@@ -1,3 +1,23 @@
+export interface SightingRow {
+  id:                 number
+  lat:                number | null
+  lng:                number | null
+  threatScore:        number
+  radioType:          string
+  signalStrength:     number | null
+  estimatedDistanceM: number | null
+  fingerprintId:      string | null
+  timestamp:          string
+}
+
+export interface SightingsPage {
+  data:       SightingRow[]
+  total:      number
+  page:       number
+  limit:      number
+  totalPages: number
+}
+
 export interface RecentSighting {
   id: number
   lat: number | null

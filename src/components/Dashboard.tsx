@@ -5,7 +5,7 @@ import type { Page } from '../App'
 import StatCard from './StatCard'
 import SightingsChart from './SightingsChart'
 import ThreatBreakdown from './ThreatBreakdown'
-import RecentSightingsTable from './RecentSightingsTable'
+import PaginatedSightingsTable from './PaginatedSightingsTable'
 import NavTabs from './NavTabs'
 
 interface Props {
@@ -20,11 +20,12 @@ const PHT_TIME = new Intl.DateTimeFormat('en-PH', {
 })
 
 export default function Dashboard({ activePage, onNavigate, onSignOut }: Props) {
-  const [stats,       setStats]       = useState<StatsResponse | null>(null)
-  const [chart,       setChart]       = useState<ChartPoint[]>([])
-  const [loading,     setLoading]     = useState(true)
-  const [error,       setError]       = useState('')
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
+  const [stats,         setStats]         = useState<StatsResponse | null>(null)
+  const [chart,         setChart]         = useState<ChartPoint[]>([])
+  const [loading,       setLoading]       = useState(true)
+  const [error,         setError]         = useState('')
+  const [lastUpdated,   setLastUpdated]   = useState<Date | null>(null)
+  const [sightingsTick, setSightingsTick] = useState(0)
 
   const load = useCallback(async () => {
     try {
@@ -47,7 +48,10 @@ export default function Dashboard({ activePage, onNavigate, onSignOut }: Props) 
 
   useEffect(() => {
     load()
-    const id = setInterval(load, 30_000)
+    const id = setInterval(() => {
+      load()
+      setSightingsTick((t) => t + 1)
+    }, 30_000)
     return () => clearInterval(id)
   }, [load])
 
@@ -167,10 +171,10 @@ export default function Dashboard({ activePage, onNavigate, onSignOut }: Props) 
           </div>
         </div>
 
-        {/* ── Recent sightings table ───────────────────────────────────────── */}
+        {/* ── Paginated sightings table ────────────────────────────────────── */}
         <div className="bg-card rounded-2xl p-6 border border-white/5">
-          <h2 className="text-sm font-semibold text-white/80 mb-4">Recent Sightings</h2>
-          <RecentSightingsTable sightings={stats?.recentSightings ?? []} />
+          <h2 className="text-sm font-semibold text-white/80 mb-4">All Sightings</h2>
+          <PaginatedSightingsTable refreshTick={sightingsTick} onSignOut={onSignOut} />
         </div>
 
       </main>
