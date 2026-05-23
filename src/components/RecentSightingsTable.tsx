@@ -61,7 +61,16 @@ export default function RecentSightingsTable({ sightings }: Props) {
               </td>
               <td className="py-3 pr-4 font-mono text-xs">
                 {s.fingerprintId
-                  ? <span className="text-white/70">{s.fingerprintId}</span>
+                  ? s.fingerprintId.startsWith('noid_')
+                    ? (
+                      <span
+                        className="text-muted/60 italic"
+                        title="This tower has no identity. Fingerprint is based on reporter location grid (~111m accuracy)."
+                      >
+                        {s.fingerprintId}
+                      </span>
+                    )
+                    : <span className="text-white/70">{s.fingerprintId}</span>
                   : <span className="text-muted/40 italic text-[10px]">—</span>}
               </td>
               <td className="py-3 text-xs text-muted whitespace-nowrap">

@@ -231,7 +231,16 @@ export default function MapPage({ activePage, onNavigate, onSignOut }: Props) {
                       Radius: {hz.radius}m
                     </div>
                     {hz.fingerprintId && (
-                      <div style={{ color: '#888', fontSize: 11, fontFamily: 'monospace' }}>
+                      <div
+                        style={{
+                          color: hz.fingerprintId.startsWith('noid_') ? '#666' : '#888',
+                          fontSize: 11, fontFamily: 'monospace',
+                          fontStyle: hz.fingerprintId.startsWith('noid_') ? 'italic' : 'normal',
+                        }}
+                        title={hz.fingerprintId.startsWith('noid_')
+                          ? 'This tower has no identity. Fingerprint is based on reporter location grid (~111m accuracy).'
+                          : undefined}
+                      >
                         FP: {hz.fingerprintId}
                       </div>
                     )}
@@ -297,7 +306,16 @@ export default function MapPage({ activePage, onNavigate, onSignOut }: Props) {
                         </div>
                       )}
                       {hz.fingerprintId && (
-                        <div style={{ color: '#888', fontSize: 11, fontFamily: 'monospace' }}>
+                        <div
+                          style={{
+                            color: hz.fingerprintId.startsWith('noid_') ? '#666' : '#888',
+                            fontSize: 11, fontFamily: 'monospace',
+                            fontStyle: hz.fingerprintId.startsWith('noid_') ? 'italic' : 'normal',
+                          }}
+                          title={hz.fingerprintId.startsWith('noid_')
+                            ? 'This tower has no identity. Fingerprint is based on reporter location grid (~111m accuracy).'
+                            : undefined}
+                        >
                           FP: {hz.fingerprintId}
                         </div>
                       )}
@@ -326,7 +344,16 @@ export default function MapPage({ activePage, onNavigate, onSignOut }: Props) {
                     </div>
                     <div style={{ color: '#888', fontSize: 11 }}>Radio: {s.radioType}</div>
                     {s.fingerprintId && (
-                      <div style={{ color: '#888', fontSize: 11, fontFamily: 'monospace' }}>
+                      <div
+                        style={{
+                          color: s.fingerprintId.startsWith('noid_') ? '#666' : '#888',
+                          fontSize: 11, fontFamily: 'monospace',
+                          fontStyle: s.fingerprintId.startsWith('noid_') ? 'italic' : 'normal',
+                        }}
+                        title={s.fingerprintId.startsWith('noid_')
+                          ? 'This tower has no identity. Fingerprint is based on reporter location grid (~111m accuracy).'
+                          : undefined}
+                      >
                         FP: {s.fingerprintId}
                       </div>
                     )}
