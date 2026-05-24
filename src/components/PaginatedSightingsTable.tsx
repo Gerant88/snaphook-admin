@@ -3,8 +3,9 @@ import { fetchSightings } from '../api'
 import type { SightingRow } from '../types'
 
 interface Props {
-  refreshTick: number   // incremented by parent every 30s; re-fetches current page without resetting
-  onSignOut:   () => void
+  refreshTick:   number   // incremented by parent every 30s; re-fetches current page without resetting
+  onSignOut:     () => void
+  onOpenProfile: (fpId: string) => void
 }
 
 const PHT = new Intl.DateTimeFormat('en-PH', {
@@ -31,7 +32,7 @@ function pageNumbers(current: number, total: number): (number | '…')[] {
 
 const HEADERS = ['ID', 'Lat / Lng', 'Score', 'Radio', 'Signal', 'Est. Distance', 'Fingerprint', 'Time (PHT)']
 
-export default function PaginatedSightingsTable({ refreshTick, onSignOut }: Props) {
+export default function PaginatedSightingsTable({ refreshTick, onSignOut, onOpenProfile }: Props) {
   const [page,       setPage]       = useState(1)
   const [limit,      setLimit]      = useState(10)
   const [data,       setData]       = useState<SightingRow[]>([])
@@ -133,7 +134,15 @@ export default function PaginatedSightingsTable({ refreshTick, onSignOut }: Prop
                 {/* Fingerprint */}
                 <td className="py-3 pr-4 font-mono text-xs whitespace-nowrap">
                   {s.fingerprintId
-                    ? <span className="text-white/60">{s.fingerprintId.slice(0, 8)}</span>
+                    ? (
+                      <button
+                        onClick={() => onOpenProfile(s.fingerprintId!)}
+                        className="text-teal/80 hover:text-teal transition-colors underline-offset-2 hover:underline"
+                        title="Open Threat Profile"
+                      >
+                        {s.fingerprintId.slice(0, 10)}
+                      </button>
+                    )
                     : <span className="text-muted">—</span>}
                 </td>
 

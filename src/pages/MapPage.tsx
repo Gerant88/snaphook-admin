@@ -7,9 +7,10 @@ import type { Page } from '../App'
 import NavTabs from '../components/NavTabs'
 
 interface Props {
-  activePage: Page
-  onNavigate: (p: Page) => void
-  onSignOut:  () => void
+  activePage:    Page
+  onNavigate:    (p: Page) => void
+  onSignOut:     () => void
+  onOpenProfile: (fpId: string) => void
 }
 
 // ── Colour helpers ────────────────────────────────────────────────────────────
@@ -78,7 +79,7 @@ function MapRefresher({ trigger }: { trigger: number }) {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function MapPage({ activePage, onNavigate, onSignOut }: Props) {
+export default function MapPage({ activePage, onNavigate, onSignOut, onOpenProfile }: Props) {
   const [hotzones,         setHotzones]         = useState<Hotzone[]>([])
   const [sightings,        setSightings]        = useState<RecentSighting[]>([])
   const [showHotzones,     setShowHotzones]     = useState(true)
@@ -231,18 +232,21 @@ export default function MapPage({ activePage, onNavigate, onSignOut }: Props) {
                       Radius: {hz.radius}m
                     </div>
                     {hz.fingerprintId && (
-                      <div
+                      <button
+                        onClick={() => onOpenProfile(hz.fingerprintId!)}
                         style={{
-                          color: hz.fingerprintId.startsWith('noid_') ? '#666' : '#888',
-                          fontSize: 11, fontFamily: 'monospace',
+                          display: 'block', background: 'none', border: 'none', padding: 0,
+                          color: hz.fingerprintId.startsWith('noid_') ? '#666' : '#00D4AA',
+                          fontSize: 11, fontFamily: 'monospace', cursor: 'pointer',
                           fontStyle: hz.fingerprintId.startsWith('noid_') ? 'italic' : 'normal',
+                          textAlign: 'left',
                         }}
                         title={hz.fingerprintId.startsWith('noid_')
-                          ? 'This tower has no identity. Fingerprint is based on reporter location grid (~111m accuracy).'
-                          : undefined}
+                          ? 'Location-based fingerprint (~111m). Click to open profile.'
+                          : 'Click to open Threat Profile'}
                       >
                         FP: {hz.fingerprintId}
-                      </div>
+                      </button>
                     )}
                     {hz.fingerprintId && hz.triLat == null && (
                       <button
@@ -306,18 +310,19 @@ export default function MapPage({ activePage, onNavigate, onSignOut }: Props) {
                         </div>
                       )}
                       {hz.fingerprintId && (
-                        <div
+                        <button
+                          onClick={() => onOpenProfile(hz.fingerprintId!)}
                           style={{
-                            color: hz.fingerprintId.startsWith('noid_') ? '#666' : '#888',
-                            fontSize: 11, fontFamily: 'monospace',
+                            display: 'block', background: 'none', border: 'none', padding: 0,
+                            color: hz.fingerprintId.startsWith('noid_') ? '#666' : '#00D4AA',
+                            fontSize: 11, fontFamily: 'monospace', cursor: 'pointer',
                             fontStyle: hz.fingerprintId.startsWith('noid_') ? 'italic' : 'normal',
+                            textAlign: 'left',
                           }}
-                          title={hz.fingerprintId.startsWith('noid_')
-                            ? 'This tower has no identity. Fingerprint is based on reporter location grid (~111m accuracy).'
-                            : undefined}
+                          title="Click to open Threat Profile"
                         >
                           FP: {hz.fingerprintId}
-                        </div>
+                        </button>
                       )}
                     </div>
                   </Popup>
@@ -344,18 +349,21 @@ export default function MapPage({ activePage, onNavigate, onSignOut }: Props) {
                     </div>
                     <div style={{ color: '#888', fontSize: 11 }}>Radio: {s.radioType}</div>
                     {s.fingerprintId && (
-                      <div
+                      <button
+                        onClick={() => onOpenProfile(s.fingerprintId!)}
                         style={{
-                          color: s.fingerprintId.startsWith('noid_') ? '#666' : '#888',
-                          fontSize: 11, fontFamily: 'monospace',
+                          display: 'block', background: 'none', border: 'none', padding: 0,
+                          color: s.fingerprintId.startsWith('noid_') ? '#666' : '#00D4AA',
+                          fontSize: 11, fontFamily: 'monospace', cursor: 'pointer',
                           fontStyle: s.fingerprintId.startsWith('noid_') ? 'italic' : 'normal',
+                          textAlign: 'left',
                         }}
                         title={s.fingerprintId.startsWith('noid_')
-                          ? 'This tower has no identity. Fingerprint is based on reporter location grid (~111m accuracy).'
-                          : undefined}
+                          ? 'Location-based fingerprint (~111m). Click to open profile.'
+                          : 'Click to open Threat Profile'}
                       >
                         FP: {s.fingerprintId}
-                      </div>
+                      </button>
                     )}
                     <div style={{ color: '#888', fontSize: 11 }}>
                       {PHT.format(new Date(s.timestamp))}

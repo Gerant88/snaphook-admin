@@ -1,4 +1,4 @@
-import type { StatsResponse, ChartPoint, Hotzone, ConfigEntry, SightingsPage } from './types'
+import type { StatsResponse, ChartPoint, Hotzone, ConfigEntry, SightingsPage, ThreatProfile, ActivityData, RelatedFingerprint, Campaign } from './types'
 
 const BASE_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? 'https://api.thesnaphook.app'
 
@@ -70,4 +70,37 @@ export async function generateTestSightings(params: {
     throw Object.assign(new Error(body.error ?? `HTTP ${res.status}`), { status: res.status })
   }
   return res.json() as Promise<{ ok: boolean; generated: number; fingerprintId: string }>
+}
+
+// GER-62: Threat Profile endpoints
+export const fetchFingerprintProfile = (id: string) =>
+  request<ThreatProfile>(`/admin/fingerprints/${encodeURIComponent(id)}`)
+
+export const fetchFingerprintActivity = (id: string) =>
+  request<ActivityData>(`/admin/fingerprints/${encodeURIComponent(id)}/activity`)
+
+export const fetchFingerprintRelated = (id: string) =>
+  request<{ related: RelatedFingerprint[] }>(`/admin/fingerprints/${encodeURIComponent(id)}/related`)
+
+export async function updateFingerprintNotes(id: string, notes: string): Promise<void> {
+  const res = await fetch(`${BASE_URL}/admin/fingerprints/${encodeURIComponent(id)}/notes`, {
+    method:  'PUT',
+    headers: adminHeaders(),
+    body:    JSON.stringify({ notes }),
+  })
+  if (!res.ok) throw Object.assign(new Error(`HTTP ${res.status}`), { status: res.status })
+}
+
+export const fetchCampaigns = () => request<Campaign[]>('/admin/campaigns')
+
+export async function createCampaign(data: {
+  name: string; notes?: string; fingerprintIds: string[]
+}): Promise<Campaign> {
+  const res = await fetch(`${BASE_URL}/admin/campaigns`, {
+    method:  'POST',
+    headers: adminHeaders(),
+    body:    JSON.stringify(data),
+  })
+  if (!res.ok) throw Object.assign(new Error(`HTTP ${res.status}`), { status: res.status })
+  return res.json() as Promise<Campaign>
 }

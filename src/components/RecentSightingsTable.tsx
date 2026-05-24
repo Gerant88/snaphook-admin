@@ -1,6 +1,9 @@
 import type { RecentSighting } from '../types'
 
-interface Props { sightings: RecentSighting[] }
+interface Props {
+  sightings:     RecentSighting[]
+  onOpenProfile: (fpId: string) => void
+}
 
 const PHT = new Intl.DateTimeFormat('en-PH', {
   timeZone: 'Asia/Manila',
@@ -21,7 +24,7 @@ const fmtDist = (d: number | null) =>
 
 const HEADERS = ['ID', 'Lat / Lng', 'Threat Score', 'Radio', 'Est. Distance', 'Fingerprint', 'Time (PHT)']
 
-export default function RecentSightingsTable({ sightings }: Props) {
+export default function RecentSightingsTable({ sightings, onOpenProfile }: Props) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
@@ -61,16 +64,21 @@ export default function RecentSightingsTable({ sightings }: Props) {
               </td>
               <td className="py-3 pr-4 font-mono text-xs">
                 {s.fingerprintId
-                  ? s.fingerprintId.startsWith('noid_')
-                    ? (
-                      <span
-                        className="text-muted/60 italic"
-                        title="This tower has no identity. Fingerprint is based on reporter location grid (~111m accuracy)."
-                      >
-                        {s.fingerprintId}
-                      </span>
-                    )
-                    : <span className="text-white/70">{s.fingerprintId}</span>
+                  ? (
+                    <button
+                      onClick={() => onOpenProfile(s.fingerprintId!)}
+                      className={`hover:underline underline-offset-2 transition-colors ${
+                        s.fingerprintId.startsWith('noid_')
+                          ? 'text-muted/60 italic'
+                          : 'text-teal/80 hover:text-teal'
+                      }`}
+                      title={s.fingerprintId.startsWith('noid_')
+                        ? 'Location-based fingerprint (~111m). Click to open profile.'
+                        : 'Click to open Threat Profile'}
+                    >
+                      {s.fingerprintId}
+                    </button>
+                  )
                   : <span className="text-muted/40 italic text-[10px]">—</span>}
               </td>
               <td className="py-3 text-xs text-muted whitespace-nowrap">

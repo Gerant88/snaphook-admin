@@ -9,9 +9,10 @@ import PaginatedSightingsTable from './PaginatedSightingsTable'
 import NavTabs from './NavTabs'
 
 interface Props {
-  activePage: Page
-  onNavigate: (p: Page) => void
-  onSignOut: () => void
+  activePage:    Page
+  onNavigate:    (p: Page) => void
+  onSignOut:     () => void
+  onOpenProfile: (fpId: string) => void
 }
 
 const PHT_TIME = new Intl.DateTimeFormat('en-PH', {
@@ -19,7 +20,7 @@ const PHT_TIME = new Intl.DateTimeFormat('en-PH', {
   hour: '2-digit', minute: '2-digit', second: '2-digit',
 })
 
-export default function Dashboard({ activePage, onNavigate, onSignOut }: Props) {
+export default function Dashboard({ activePage, onNavigate, onSignOut, onOpenProfile }: Props) {
   const [stats,         setStats]         = useState<StatsResponse | null>(null)
   const [chart,         setChart]         = useState<ChartPoint[]>([])
   const [loading,       setLoading]       = useState(true)
@@ -174,7 +175,7 @@ export default function Dashboard({ activePage, onNavigate, onSignOut }: Props) 
         {/* ── Paginated sightings table ────────────────────────────────────── */}
         <div className="bg-card rounded-2xl p-6 border border-white/5">
           <h2 className="text-sm font-semibold text-white/80 mb-4">All Sightings</h2>
-          <PaginatedSightingsTable refreshTick={sightingsTick} onSignOut={onSignOut} />
+          <PaginatedSightingsTable refreshTick={sightingsTick} onSignOut={onSignOut} onOpenProfile={onOpenProfile} />
         </div>
 
       </main>

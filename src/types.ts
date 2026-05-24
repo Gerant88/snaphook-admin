@@ -80,3 +80,53 @@ export interface Hotzone {
   isMobile:         boolean
   lastTriangulated: string | null
 }
+
+// GER-62: Threat Profile types
+export interface ThreatProfile {
+  fingerprintId:        string
+  cellId:               number | null
+  mcc:                  string | null
+  mnc:                  string | null
+  lac:                  number | null
+  radioType:            string
+  firstSeen:            string
+  lastSeen:             string
+  totalSightings:       number
+  uniqueReporters:      number
+  threatClassification: 'NO_IDENTITY' | 'UNKNOWN_TOWER' | 'STRONG_SIGNAL'
+  status:               'ACTIVE' | 'DORMANT' | 'INACTIVE'
+  sightingPoints:       { lat: number; lng: number; timestamp: string; threatScore: number }[]
+  hotzone:              { triLat: number | null; triLng: number | null; triConfidenceM: number | null; isMobile: boolean; triReporterCount: number | null } | null
+  avgSignalStrength:    number | null
+  minSignalStrength:    number | null
+  maxSignalStrength:    number | null
+  avgDistanceM:         number | null
+  minDistanceM:         number | null
+  maxDistanceM:         number | null
+  notes:                string | null
+  campaigns:            { id: number; name: string }[]
+}
+
+export interface ActivityData {
+  grid:        { hour: number; dow: number; count: number }[]
+  dailySeries: { date: string; count: number }[]
+  peakHour:    number
+  peakDow:     number
+}
+
+export interface RelatedFingerprint {
+  fingerprintId:       string
+  distanceM:           number
+  temporalOverlapPct:  number
+  sightingCount:       number
+  confidence:          number
+}
+
+export interface Campaign {
+  id:             number
+  name:           string
+  notes:          string | null
+  fingerprintIds: string[]
+  createdAt:      string
+  updatedAt:      string
+}
