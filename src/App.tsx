@@ -4,8 +4,9 @@ import Dashboard from './components/Dashboard'
 import MapPage from './pages/MapPage'
 import ConfigPage from './pages/ConfigPage'
 import ThreatProfilePage from './pages/ThreatProfilePage'
+import AlgorithmPage from './pages/AlgorithmPage'
 
-export type Page = 'dashboard' | 'map' | 'config' | 'profile'
+export type Page = 'dashboard' | 'map' | 'config' | 'profile' | 'algorithm'
 
 export default function App() {
   const [authed, setAuthed] = useState(
@@ -41,9 +42,11 @@ export default function App() {
     case 'profile':
       return <ThreatProfilePage {...navProps} fingerprintId={profileFp} backPage={backPage} />
     case 'map':
-      return <MapPage    {...navProps} />
+      return <MapPage       {...navProps} />
     case 'config':
-      return <ConfigPage activePage={page} onNavigate={setPage} onSignOut={handleSignOut} />
+      return <ConfigPage    activePage={page} onNavigate={setPage} onSignOut={handleSignOut} />
+    case 'algorithm':
+      return <AlgorithmPage activePage={page} onNavigate={setPage} onSignOut={handleSignOut} />
     default:
       return <Dashboard  {...navProps} />
   }
