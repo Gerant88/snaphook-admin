@@ -105,6 +105,10 @@ export interface ThreatProfile {
   maxDistanceM:         number | null
   notes:                string | null
   campaigns:            { id: number; name: string }[]
+  correlationEvents:    number
+  correlatedConfidence: number | null
+  correlationBreakdown: Record<string, number>
+  correlationList:      { correlationType: string; boost: number; timestamp: string }[]
 }
 
 export interface ActivityData {

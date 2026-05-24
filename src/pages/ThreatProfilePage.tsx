@@ -262,6 +262,41 @@ export default function ThreatProfilePage({
                 <Stat label="First Seen" value={PHT.format(new Date(profile.firstSeen))} small />
                 <Stat label="Last Seen"  value={PHT.format(new Date(profile.lastSeen))}  small />
               </div>
+
+              {/* SMS-Tower correlation panel (GER-75) */}
+              {profile.correlationEvents > 0 && (
+                <div className="mt-5 pt-5 border-t border-white/5">
+                  <div className="flex flex-wrap items-start gap-6">
+                    <div>
+                      <p className="text-xs text-muted mb-1">Correlated SMS Events</p>
+                      <p className="text-base font-semibold" style={{ color: '#FFB300' }}>
+                        {profile.correlationEvents}
+                      </p>
+                    </div>
+                    {profile.correlatedConfidence != null && (
+                      <div>
+                        <p className="text-xs text-muted mb-1">Correlated Confidence</p>
+                        <p className="text-base font-semibold font-mono"
+                          style={{ color: scoreColor(profile.correlatedConfidence) }}>
+                          {(profile.correlatedConfidence * 100).toFixed(0)}%
+                          <span className="text-xs text-muted ml-2 font-sans font-normal">
+                            (base + SMS boost)
+                          </span>
+                        </p>
+                      </div>
+                    )}
+                    <div className="flex flex-wrap gap-2 mt-0.5">
+                      {Object.entries(profile.correlationBreakdown).map(([type, count]) => (
+                        <span key={type}
+                          className="text-xs rounded-full px-3 py-0.5 border"
+                          style={{ color: '#FFB300', borderColor: 'rgba(255,179,0,0.3)', background: 'rgba(255,179,0,0.08)' }}>
+                          {type.replace(/_/g, ' ')}: {count}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* ── 2. Map + Signal profile row ─────────────────────────────── */}
